@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>TGS Studio — Login</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    min-height: 100vh; background: #000;
+    display: flex; align-items: center; justify-content: center;
+    font-family: -apple-system, 'Inter', sans-serif;
+  }
+  body::before {
+    content:""; position:fixed; inset:0; pointer-events:none;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 0%, rgba(254,44,85,0.22) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 80% 100%, rgba(37,244,238,0.10) 0%, transparent 70%),
+      #000;
+  }
+  .card {
+    position: relative;
+    background: rgba(28,28,30,0.9);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 24px; padding: 40px 32px;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 20px; max-width: 320px; width: 90%;
+  }
+  .logo {
+    font-size: 32px; font-weight: 800; letter-spacing: -1px;
+    background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.75) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .logo em {
+    font-style: normal;
+    background: linear-gradient(135deg, #fe2c55 0%, #ff6b8a 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .subtitle { font-size: 13px; color: rgba(235,235,245,0.6); text-align: center; line-height: 1.5; margin-top: -8px; }
+  .status { font-size: 13px; color: rgba(235,235,245,0.5); text-align: center; }
+  .success { color: #30d158; font-weight: 600; font-size: 15px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">TGS <em>STUDIO</em></div>
+  <div class="subtitle">Inicia sesión con Telegram<br>para acceder a la extensión</div>
+
+  <script
+    async
+    src="https://telegram.org/js/telegram-widget.js?22"
+    data-telegram-login="tgs_studio_bot"
+    data-size="large"
+    data-onauth="onTelegramAuth(user)"
+    data-request-access="write"
+  ></script>
+
+  <div class="status" id="status">Esperando login...</div>
+</div>
+
+<script>
+function onTelegramAuth(user) {
+  document.getElementById('status').textContent = 'Verificando...';
+  const userData = {
+    uid:      String(user.id),
+    name:     [user.first_name, user.last_name].filter(Boolean).join(' '),
+    username: user.username || '',
+    photo:    user.photo_url || '',
+    hash:     user.hash
+  };
+  if (window.opener) {
+    window.opener.postMessage({ type: 'TGS_AUTH_SUCCESS', user: userData }, '*');
+    document.getElementById('status').innerHTML = '<span class="success">✓ Sesión iniciada. Puedes cerrar esta pestaña.</span>';
+    setTimeout(() => window.close(), 2000);
+  } else {
+    localStorage.setItem('tgs_pending_auth', JSON.stringify(userData));
+    document.getElementById('status').innerHTML = '<span class="success">✓ Sesión iniciada. Vuelve a la extensión.</span>';
+  }
+}
+</script>
+</body>
+</html>
