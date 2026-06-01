@@ -68,19 +68,17 @@ function onTelegramAuth(user) {
     photo:    user.photo_url || '',
     hash:     user.hash
   };
-  if (window.opener) {
-    if (window.opener) {
-      window.opener.postMessage({ type: 'TGS_AUTH_SUCCESS', user: userData }, '*');
-    }
+  // Mobile redirect flow (site sends ?return_url=...)
+  const params = new URLSearchParams(window.location.search);
+  const returnUrl = params.get('return_url');
+  if (returnUrl) {
+    const encoded = btoa(encodeURIComponent(JSON.stringify(userData)));
+    window.location.href = decodeURIComponent(returnUrl) + '?tgs_auth=' + encoded;
+    return;
+  }
 
-    // Mobile redirect flow
-    const params = new URLSearchParams(window.location.search);
-    const returnUrl = params.get('return_url');
-    if (returnUrl) {
-      const encoded = btoa(encodeURIComponent(JSON.stringify(userData)));
-      window.location.href = decodeURIComponent(returnUrl) + '?tgs_auth=' + encoded;
-      return;
-    }
+  if (window.opener) {
+    window.opener.postMessage({ type: 'TGS_AUTH_SUCCESS', user: userData }, '*');
     document.getElementById('status').innerHTML = '<span class="success">✓ Sesión iniciada. Puedes cerrar esta pestaña.</span>';
     setTimeout(() => window.close(), 2000);
   } else {
