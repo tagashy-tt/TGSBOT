@@ -1,16 +1,19 @@
 {
   "name": "tays-studio-telegram-launch",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
-  "description": "AMOLED launch countdown and progress image bot for the TAY's STUDIO public Telegram channel",
+  "description": "Barra de progreso AMOLED y cuenta regresiva automática para el canal de Telegram de TAY'S STUDIO",
   "main": "bot.js",
   "scripts": {
-    "start": "node bot.js"
+    "start": "node bot.js",
+    "check": "node --check bot.js && node --check render.js",
+    "preview": "node preview.js"
   },
   "engines": {
     "node": ">=20"
   },
   "dependencies": {
+    "opentype.js": "1.3.4",
     "sharp": "^0.34.4"
   }
 }
