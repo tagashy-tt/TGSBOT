@@ -1,0 +1,16 @@
+{
+  "name": "tays-studio-telegram-launch",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AMOLED launch countdown and progress image bot for the TAY's STUDIO public Telegram channel",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "sharp": "^0.34.4"
+  }
+}
