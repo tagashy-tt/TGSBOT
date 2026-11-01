@@ -29,6 +29,9 @@ const ENV_MESSAGE_ID = env("LAUNCH_MESSAGE_ID");
 const FINAL_ENABLED = bool(env("FINAL_ANNOUNCEMENT_ENABLED", "false"));
 const FINAL_LINK_URL = env("FINAL_LINK_URL");
 const FINAL_LINK_TEXT = env("FINAL_LINK_TEXT", "Open TAY’S STUDIO");
+const PROMO_CODE = env("FINAL_PROMO_CODE", "TAY'S-LAUNCH31");
+const PROMO_PRICE = env("FINAL_PROMO_PRICE", "$19.99");
+const PROMO_UNTIL = env("FINAL_PROMO_UNTIL", "Nov 7");
 const PIN_POST = bool(env("PIN_PROGRESS_POST", "true"));
 const TIMEZONE = env("TIMEZONE", "America/Costa_Rica");
 const STATE_FILE = env("STATE_FILE", path.join(__dirname, "state.json"));
@@ -210,12 +213,26 @@ function progressCaption(percent, now = Date.now()) {
 }
 
 function finalCaption() {
-  return [
-    "🚀 TAY’S STUDIO IS NOW LIVE",
+  const lines = [
+    "🚀 TAY’S STUDIO 1.0.0 IS NOW LIVE",
     "",
     "The wait is over. Thank you for being part of this journey.",
-    "Welcome to the next era.",
-  ].join("\n");
+    "",
+    "✦ Enhance photos and video with AI (Real-ESRGAN, Real-CUGAN, your own models)",
+    "✦ Upload to TikTok and Instagram, check and compare videos",
+    "✦ Download videos, manga and anime browsers with ad blocking",
+    "✦ Proteus Core: processor info, 40 °C protection, Auto model",
+    "✦ Custom looks: shooting stars, aurora, animations",
+    "",
+    "🆓 Free: 5 Topaz photo uses, 5 checks and 5 downloads per week · AI video enhancement is free",
+    "⭐ Premium: no limits and extra personalization",
+  ];
+  if (PROMO_CODE) {
+    lines.push("", `🎟 Launch offer: Lifetime${PROMO_PRICE ? ` for ${PROMO_PRICE}` : ""} with code ${PROMO_CODE}${PROMO_UNTIL ? ` (until ${PROMO_UNTIL})` : ""}`);
+  }
+  lines.push("", "Methods may or may not work depending on your phone and on TikTok / Instagram changes. If something fails, message us with a screenshot and your phone model.", "", "Welcome to the next era.");
+  const text = lines.join("\n");
+  return text.length > 1000 ? text.slice(0, 997) + "…" : text; // Telegram caption limit: 1024
 }
 
 /* ------------------------------------------------------------------ */

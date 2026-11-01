@@ -23,9 +23,10 @@ TELEGRAM_CHANNEL=@pruebastgs
 PROGRESS_START_AT=2026-10-28T20:00:00-06:00
 LAUNCH_AT=2026-10-31T20:00:00-06:00
 LAUNCH_PROGRESS=85
-FINAL_ANNOUNCEMENT_ENABLED=false
+FINAL_ANNOUNCEMENT_ENABLED=true
+FINAL_LINK_URL=https://TU-LINK-DE-DESCARGA
 ```
-Opcionales: `LAUNCH_MESSAGE_ID`, `FINAL_LINK_URL`, `FINAL_LINK_TEXT`, `PIN_PROGRESS_POST` (true), `TIMEZONE` (America/Costa_Rica), `STATE_FILE`.
+Opcionales (anuncio final): `FINAL_PROMO_CODE`, `FINAL_PROMO_PRICE`, `FINAL_PROMO_UNTIL` (vacío en `FINAL_PROMO_CODE` = sin línea de oferta). Otros: `LAUNCH_MESSAGE_ID`, `FINAL_LINK_URL`, `FINAL_LINK_TEXT`, `PIN_PROGRESS_POST` (true), `TIMEZONE` (America/Costa_Rica), `STATE_FILE`.
 
 **Recomendado:** crea un *Volume* en Railway montado en `/data` y pon `STATE_FILE=/data/state.json`. Sin volumen funciona igual gracias al mensaje fijado, pero el volumen es la protección más segura contra duplicados.
 
